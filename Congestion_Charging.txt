@@ -1,0 +1,92 @@
+1.
+
+SELECT 
+	keeper.name,
+	keeper.address
+FROM 
+	vehicle 
+	JOIN 
+		keeper ON (vehicle.keeper = keeper.id)
+WHERE
+	vehicle.id = 'SO 02 PSP';
+	
+2.
+
+SELECT 
+	COUNT(DISTINCT camera.id)
+FROM 
+	camera
+WHERE
+	camera.perim = 'IN';
+	
+3.
+
+SELECT 
+	*
+FROM 
+	image
+WHERE 
+	image.camera = 10
+	AND
+	image.whn < '2007-02-26';
+	
+4.
+
+SELECT
+	image.camera, 
+	COUNT(*)
+FROM 
+	image
+WHERE
+	image.camera NOT IN (15, 16, 17, 18, 19)
+GROUP BY
+	image.camera;	
+
+5.
+
+SELECT 
+	keeper.name, 
+	keeper.address
+FROM 
+	vehicle
+	JOIN 
+		permit ON (vehicle.id = permit.reg)
+	JOIN 
+		keeper ON (vehicle.keeper = keeper.id)
+WHERE
+	permit.sDate = '2007-01-30'
+GROUP BY
+	keeper.name, 
+	keeper.address;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
