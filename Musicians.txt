@@ -1,0 +1,43 @@
+1.
+
+SELECT 
+	musician.m_name as organiser
+FROM 
+	concert 
+	JOIN 
+		musician ON (musician.m_no = concert.concert_orgniser)
+WHERE 
+	concert_venue = 'Assembly Rooms';
+	
+2.
+
+SELECT 
+	m_name, 
+	instrument
+FROM 
+	musician 
+	JOIN 
+		performer ON (m_no = perf_is)
+	JOIN 
+		place ON (place_no = born_in)
+WHERE 
+	instrument IN ('guitar', 'violin') 
+	AND 
+	place_country ='England';
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

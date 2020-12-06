@@ -1,0 +1,194 @@
+1. 
+
+SELECT booking_date, nights
+FROM booking
+WHERE guest_id = 1183;
+
+2.
+
+SELECT 	
+	booking.arrival_time,
+       	guest.first_name,
+       	guest.last_name
+FROM 
+       	booking JOIN guest ON (booking.guest_id = guest.id)
+WHERE
+	YEAR(booking.booking_date) = '2016'
+	AND MONTH(booking.booking_date) = '11'
+	AND DAY(booking.booking_date) = '05'
+ORDER BY
+	booking.arrival_time;
+	
+3.
+
+SELECT 
+	booking.booking_id,
+	booking.room_type_requested,
+	booking.occupants,
+	rate.amount
+FROM 
+	booking JOIN rate ON (booking.occupants = rate.occupancy AND booking.room_type_requested = rate.room_type)
+WHERE
+	booking.booking_id IN (5152, 5165, 5154, 5295);
+	
+4.
+
+SELECT 
+	guest.first_name,
+	guest.last_name,
+	guest.address
+FROM 
+	booking JOIN guest ON (booking.guest_id = guest.id)
+WHERE 
+	booking.room_no = 101
+	AND
+	booking.booking_date = '2016-12-03';
+
+5.
+
+SELECT 
+	booking.guest_id,
+	COUNT(booking.nights),
+	SUM(booking.nights)
+FROM 
+	booking
+WHERE 
+	booking.guest_id = 1185 
+	OR
+	booking.guest_id = 1270
+GROUP BY 
+	booking.guest_id;
+
+6.
+
+SELECT 
+	SUM(booking.nights * rate.amount)
+FROM 
+	booking JOIN rate ON (booking.occupants = rate.occupancy AND booking.room_type_requested = rate.room_type)
+WHERE 
+	booking.guest_id = (
+		SELECT id
+		FROM guest
+		WHERE 
+			first_name = 'Ruth'
+		  	AND
+		  	last_name = 'Cadbury' 
+	);	
+
+7.
+
+SELECT 
+	SUM(booking.nights * rate.amount) + SUM(extra.amount)
+FROM 
+	booking 
+	JOIN 
+	(
+		SELECT
+			booking_id,
+			SUM(amount) as amount
+		FROM
+			extra
+		GROUP BY
+			booking_id
+	) AS extra 
+	ON (booking.booking_id = extra.booking_id)
+	JOIN 
+	rate ON (booking.occupants = rate.occupancy AND booking.room_type_requested = rate.room_type)
+WHERE
+	booking.booking_id = 5346;	
+
+8.
+
+SELECT  
+	guest.last_name, 
+	guest.first_name, 
+	guest.address,
+	CASE 
+		WHEN 
+			SUM(booking.nights) IS NULL
+		THEN
+			0
+		ELSE
+			SUM(booking.nights)
+	END AS nights
+FROM 
+	booking
+	RIGHT JOIN 
+	guest ON (booking.guest_id = guest.id)
+WHERE
+	guest.address LIKE '%Edinburgh%'
+GROUP BY 
+	guest.id, guest.last_name, guest.first_name, guest.address
+ORDER BY
+	guest.last_name, guest.first_name;
+
+9.
+
+SELECT 
+	CONCAT(YEAR(booking.booking_date), '-', MONTH(booking.booking_date), '-', DAY(booking.booking_date)) AS i,
+	COUNT(booking.guest_id) AS arrivals
+FROM 
+	booking 
+WHERE 
+	booking.booking_date BETWEEN '2016-11-25' AND '2016-12-01'
+GROUP BY
+	booking.booking_date;
+
+
+11.
+
+SELECT DISTINCT
+	A.last_name,
+	A.first_name,
+	B.first_name
+FROM 
+	(
+		SELECT *
+		FROM 
+			booking 
+			JOIN 
+				guest ON (booking.guest_id = guest.id)
+	) AS A
+	JOIN
+	(
+		SELECT *
+		FROM 
+			booking 
+			JOIN 
+				guest ON (booking.guest_id = guest.id)
+	) AS B
+WHERE 
+	A.guest_id <> B.guest_id
+	AND
+	A.last_name = B.last_name
+	AND 
+	A.booking_date <= B.booking_date
+	AND 
+	DATE_ADD(A.booking_date, INTERVAL (A.nights - 1) DAY) >= B.booking_date
+	AND
+	A.first_name > B.first_name
+ORDER BY
+	A.last_name;
+	
+12.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,66 @@
+1.
+
+SELECT 
+	m8/10 
+FROM 
+	hadcet
+WHERE 
+	yr=1964 
+	AND 
+	dy=10
+	
+2.
+
+SELECT 
+	yr-1811 as age, 
+	m12/10 
+FROM 
+	hadcet
+WHERE 
+	yr BETWEEN 1812 and 1812+11 
+	AND 
+	dy=25
+	
+3.
+
+SELECT 
+	yr-1811 as age, 
+	CASE 
+ 		WHEN MIN(m12/10) < 0 
+ 			THEN 'White Christmas'
+ 		ELSE 'No Snow'
+	END
+FROM 
+	hadcet
+WHERE 
+	yr BETWEEN 1812 and 1812+11 
+	AND 
+	dy BETWEEN 21 and 25
+GROUP BY 
+	age
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

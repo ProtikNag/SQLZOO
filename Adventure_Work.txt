@@ -1,0 +1,197 @@
+AdventureWorks - Easy Questions
+
+1. 
+
+SELECT FirstName, EmailAddress
+FROM Customer
+WHERE CompanyName = 'Bike World'
+
+2. 
+
+SELECT CompanyName
+FROM Customer JOIN CustomerAddress ON (Customer.CustomerID = CustomerAddress.CustomerID)
+              JOIN Address ON (Address.AddressID = CustomerAddress.AddressID)
+WHERE City = 'Dallas'
+
+3. 
+
+SELECT COUNT(*)
+FROM SalesOrderDetail JOIN Product ON (Product.ProductID = SalesOrderDetail.ProductID)
+WHERE ListPrice > 1000
+
+4.
+
+SELECT Customer.CompanyName,
+       SalesOrderHeader.SubTotal,
+       SalesOrderHeader.TaxAmt,
+       SalesOrderHeader.Freight
+FROM Customer JOIN SalesOrderHeader ON (Customer.CustomerID = SalesOrderHeader.CustomerID) 
+WHERE SalesOrderHeader.SubTotal + SalesOrderHeader.TaxAmt + SalesOrderHeader.Freight > 100000
+
+5.
+
+SELECT SalesOrderDetail.OrderQty
+FROM Customer JOIN SalesOrderHeader ON (Customer.CustomerID = SalesOrderHeader.CustomerID)
+              JOIN SalesOrderDetail ON (SalesOrderHeader.SalesOrderID = SalesOrderDetail.SalesOrderID)
+              JOIN Product ON (Product.ProductID = SalesOrderDetail.ProductID)
+WHERE Product.name = 'Racing Socks, L' AND Customer.CompanyName = 'Riding Cycles'
+  
+  
+
+AdventureWorks - Medium Questions
+  
+6. 
+
+SELECT SalesOrderID, 
+       UnitPrice
+FROM SalesOrderDetail
+WHERE OrderQty = 1;
+
+7.
+
+SELECT Product.Name, Customer.CompanyName
+FROM Customer JOIN SalesOrderHeader ON (Customer.CustomerID = SalesOrderHeader.CustomerID)
+              JOIN SalesOrderDetail ON (SalesOrderHeader.SalesOrderID = SalesOrderDetail.SalesOrderID)
+              JOIN Product ON (SalesOrderDetail.ProductID = Product.ProductID)
+              JOIN ProductModel ON (Product.ProductModelID = ProductModel.ProductModelID)
+WHERE ProductModel.Name = 'Racing Socks'
+
+8.
+
+SELECT ProductDescription.Description
+FROM Product JOIN ProductModelProductDescription ON (Product.ProductModelID = ProductModelProductDescription.ProductModelID)
+             JOIN ProductDescription ON (ProductModelProductDescription.ProductDescriptionID = ProductDescription.ProductDescriptionID)
+WHERE ProductModelProductDescription.Culture = 'fr'
+  AND Product.ProductID = 736
+
+9.
+
+SELECT Customer.CompanyName, SalesOrderHeader.SubTotal, SUM(Product.Weight * SalesOrderDetail.OrderQty)
+FROM SalesOrderHeader JOIN SalesOrderDetail ON (SalesOrderHeader.SalesOrderID = SalesOrderDetail.SalesOrderID)
+                      JOIN Product ON (SalesOrderDetail.ProductID = Product.ProductID)
+                      JOIN Customer ON (SalesOrderHeader.CustomerID = Customer.CustomerID)
+GROUP BY SalesOrderHeader.SalesOrderID, SalesOrderHeader.SubTotal, Customer.CompanyName
+ORDER BY SalesOrderHeader.SubTotal DESC
+
+10.
+
+SELECT SUM(SalesOrderDetail.OrderQty)
+FROM ProductCategory JOIN Product ON (ProductCategory.ProductCategoryID = Product.ProductCategoryID)
+                     JOIN SalesOrderDetail ON (Product.ProductID = SalesOrderDetail.ProductID)
+                     JOIN SalesOrderHeader ON (SalesOrderDetail.SalesOrderID = SalesOrderHeader.SalesorderID)
+  		     JOIN Address ON (SalesOrderHeader.ShipToAddressID = Address.AddressID)
+WHERE  Address.City = 'London'
+   AND ProductCategory.Name = 'Cranksets';
+
+11.
+
+SELECT
+ 	Customer.CompanyName,
+  	MAX(
+  	CASE 
+  		WHEN CustomerAddress.AddressType = 'Main Office' 
+  		THEN Address.AddressLine1 
+  		ELSE '' 
+  	END) AS 'Main Office Address',
+  	MAX(
+  	CASE 
+  		WHEN CustomerAddress.AddressType = 'Shipping' 
+  		THEN Address.AddressLine1 
+  		ELSE '' 
+  	END) AS 'Shipping Address'
+FROM
+  	Customer
+  	JOIN
+    		CustomerAddress ON Customer.CustomerID = CustomerAddress.CustomerID
+  	JOIN
+    		Address ON CustomerAddress.AddressID = Address.AddressID
+WHERE
+  	Address.City = 'Dallas'
+GROUP BY
+  	Customer.CompanyName;
+
+12.
+
+SELECT 
+	SalesOrderHeader.SalesOrderID,
+	SalesOrderHeader.SubTotal,
+	SUM(SalesOrderDetail.OrderQty * SalesOrderDetail.UnitPrice),
+	SUM(SalesOrderDetail.OrderQty * Product.ListPrice)
+FROM 
+	SalesOrderHeader
+	JOIN 
+		SalesOrderDetail ON (SalesOrderHeader.SalesOrderID = SalesOrderDetail.SalesOrderID)
+	JOIN 
+		Product ON (SalesOrderDetail.ProductID = Product.ProductID)
+GROUP BY
+	SalesOrderHeader.SalesOrderID,
+  	SalesOrderHeader.SubTotal;
+
+13.
+
+SELECT 
+	Product.Name,
+	SUM(SalesOrderDetail.OrderQty * SalesOrderDetail.UnitPrice) AS Total_Sale_Value
+FROM 
+	SalesOrderDetail
+	JOIN
+		Product ON (SalesOrderDetail.ProductID = Product.ProductID)
+GROUP BY
+	Product.Name
+ORDER BY
+	Total_Sale_Value DESC
+LIMIT 1;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
