@@ -25,6 +25,83 @@ WHERE
 	AND 
 	place_country ='England';
 	
+3.
+
+SELECT 
+	musician.m_name, 
+	place.place_town, 
+	concert.con_date
+FROM
+	concert 
+	JOIN 
+		musician ON (concert.concert_orgniser = musician.m_no)
+	JOIN
+		place ON (concert.concert_in = place.place_no)
+WHERE
+	place.place_country = 'USA';
+	
+4.
+
+...
+
+11.
+
+SELECT 
+	a.m_name, 
+	c.place_town
+FROM
+	(
+		SELECT 
+			* 
+		FROM 
+			musician
+	) a
+	JOIN
+	(
+		SELECT 
+			born_in 
+		FROM 
+			musician 
+		WHERE 
+			m_name = 'James First'
+	) b
+	JOIN
+	(
+		SELECT 
+			* 
+		FROM 
+			place
+	) c
+
+	ON a.born_in = b.born_in and a.born_in = c.place_no
+WHERE
+	m_name <> 'James First';
+
+12.
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
